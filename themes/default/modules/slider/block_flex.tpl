@@ -1,5 +1,8 @@
 <!-- BEGIN: main -->
+<!-- BEGIN: FLEX -->
 <link href="{NV_BASE_SITEURL}themes/{TEMPLATE}/modules/slider/plugins/flex/flexslider.css" type="text/css" media="all" rel="stylesheet" />
+<script src="{NV_BASE_SITEURL}themes/{TEMPLATE}/modules/slider/plugins/flex/jquery.flexslider.js"></script>
+<!-- END: FLEX -->
 <div class="block-{BLOCKID}-slider">
 	<ul class="slides">  
 	<!-- BEGIN: loop -->
@@ -21,5 +24,4 @@ $(window).load(function() {
   });
 });
 </script>
-<script src="{NV_BASE_SITEURL}themes/{TEMPLATE}/modules/slider/plugins/flex/jquery.flexslider.js"></script>
 <!-- END: main -->

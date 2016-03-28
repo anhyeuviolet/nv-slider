@@ -15,6 +15,7 @@ if( ! nv_function_exists( 'nv_block_slider' ) )
 	{
 		global $site_mods, $nv_Cache;
 
+		$html = '';
 		$html .= '<tr>';
 		$html .= '<td>' . $lang_block['catid'] . '</td>';
 		$sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $site_mods[$module]['module_data'] . '_cat ORDER BY sort ASC';
@@ -31,15 +32,29 @@ if( ! nv_function_exists( 'nv_block_slider' ) )
 					$xtitle_i .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
 				}
 			}
+			if( !isset($data_block['catid']) AND empty($data_block['catid']) ){
+				$data_block['catid'] = array();
+			}
 			$html .= $xtitle_i . '<label><input type="checkbox" name="config_catid[]" value="' . $l['catid'] . '" ' . ( ( in_array( $l['catid'], $data_block['catid'] ) ) ? ' checked="checked"' : '' ) . '</input>' . $l['title'] . '</label><br />';
 		}
 		$html .= '</td>';
 		$html .= '</tr>';
+		
 		$html .= '<tr>';
 		$html .= '<td>' . $lang_block['numrow'] . '</td>';
 		$html .= '<td><input type="text" class="form-control w200" name="config_numrow" size="5" value="' . $data_block['numrow'] . '"/></td>';
 		$html .= '</tr>';
-
+		
+        $html .= '<tr>';
+        $html .= '<td>' . $lang_block['block_template'] . '</td>';
+        $html .= '<td>';
+        $block_template = array( 'block_flex' => $lang_block['block_flex'], 'block_bx' => $lang_block['block_bx'], 'block_skitter' => $lang_block['block_skitter'] );
+        $html .= '<select name="config_block_template" class="form-control w100 pull-left">';
+        $data_block['block_template'] = '';
+		foreach ($block_template as $key => $value) {
+            $html .= '<option value="' . $key . '" ' . ($data_block['block_template'] == $key ? 'selected="selected"' : '') . '>' . $value . '</option>';
+        }
+		$html .= '</tr>';
 		return $html;
 	}
 
@@ -50,10 +65,8 @@ if( ! nv_function_exists( 'nv_block_slider' ) )
 		$return['error'] = array();
 		$return['config'] = array();
 		$return['config']['catid'] = $nv_Request->get_array( 'config_catid', 'post', array() );
-		$return['config']['numrow'] = $nv_Request->get_int( 'config_numrow', 'post', 0 );
-		$return['config']['showtooltip'] = $nv_Request->get_int( 'config_showtooltip', 'post', 0 );
-		$return['config']['tooltip_position'] = $nv_Request->get_string( 'config_tooltip_position', 'post', 0 );
-		$return['config']['tooltip_length'] = $nv_Request->get_string( 'config_tooltip_length', 'post', 0 );
+		$return['config']['numrow'] = $nv_Request->get_int( 'config_numrow', 'post', 2 );
+		$return['config']['block_template'] = $nv_Request->get_string( 'config_block_template', 'post', 1 );
 		return $return;
 	}
 
@@ -62,7 +75,6 @@ if( ! nv_function_exists( 'nv_block_slider' ) )
 		global $module_array_cat, $module_info, $site_mods, $module_config, $global_config, $db, $nv_Cache, $blockID;
 		$module = $block_config['module'];
 		$show_no_image = $module_config[$module]['show_no_image'];
-		$blockwidth = $module_config[$module]['blockwidth'];
 
 		if( empty( $block_config['catid'] ) ) return '';
 		
@@ -78,7 +90,11 @@ if( ! nv_function_exists( 'nv_block_slider' ) )
 
 		if( ! empty( $list ) )
 		{
-			if( file_exists( NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/slider/block_cat.tpl' ) )
+			if( empty($block_config['block_template']) ){
+				$block_config['block_template'] = 'block_flex';
+			}
+			$block_tpl = $block_config['block_template'];
+			if( file_exists( NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $site_mods[$module]['module_file'] . '/'. $block_tpl ) )
 			{
 				$block_theme = $module_info['template'];
 			}
@@ -87,12 +103,11 @@ if( ! nv_function_exists( 'nv_block_slider' ) )
 				$block_theme = 'default';
 			}
 			
-			$xtpl = new XTemplate( 'block_cat.tpl', NV_ROOTDIR . '/themes/' . $block_theme . '/modules/slider' );
+			$xtpl = new XTemplate( $block_tpl . '.tpl', NV_ROOTDIR . '/themes/' . $block_theme . '/modules/' . $site_mods[$module]['module_file'] );
 			$xtpl->assign( 'TEMPLATE', $module_info['template'] );
 			$xtpl->assign( 'BLOCKID', $blockID );
 			foreach( $list as $l )
 			{
-				
 				if( $l['homeimgthumb'] == 1 )
 				{
 					$l['thumb'] = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module . '/' . $l['homeimgfile'];
@@ -116,6 +131,24 @@ if( ! nv_function_exists( 'nv_block_slider' ) )
 				$xtpl->assign( 'ROW', $l );
 				if( ! empty( $l['thumb'] ) ) $xtpl->parse( 'main.loop.img' );
 				$xtpl->parse( 'main.loop' );
+			}
+			
+			if( ! defined( 'FLEX' ) )
+			{
+				define( 'FLEX', true );
+				$xtpl->parse( 'main.FLEX' );
+			}
+			
+			if( ! defined( 'BX' ) )
+			{
+				define( 'BX', true );
+				$xtpl->parse( 'main.BX' );
+			}
+			
+			if( ! defined( 'SKITTER' ) )
+			{
+				define( 'SKITTER', true );
+				$xtpl->parse( 'main.SKITTER' );
 			}
 			$xtpl->parse( 'main' );
 			return $xtpl->text( 'main' );
