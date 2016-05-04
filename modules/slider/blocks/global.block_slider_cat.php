@@ -50,7 +50,6 @@ if( ! nv_function_exists( 'nv_block_slider' ) )
         $html .= '<td>';
         $block_template = array( 'block_flex' => $lang_block['block_flex'], 'block_bx' => $lang_block['block_bx'], 'block_skitter' => $lang_block['block_skitter'] );
         $html .= '<select name="config_block_template" class="form-control w100 pull-left">';
-        $data_block['block_template'] = '';
 		foreach ($block_template as $key => $value) {
             $html .= '<option value="' . $key . '" ' . ($data_block['block_template'] == $key ? 'selected="selected"' : '') . '>' . $value . '</option>';
         }
@@ -65,8 +64,8 @@ if( ! nv_function_exists( 'nv_block_slider' ) )
 		$return['error'] = array();
 		$return['config'] = array();
 		$return['config']['catid'] = $nv_Request->get_array( 'config_catid', 'post', array() );
-		$return['config']['numrow'] = $nv_Request->get_int( 'config_numrow', 'post', 2 );
-		$return['config']['block_template'] = $nv_Request->get_string( 'config_block_template', 'post', 1 );
+		$return['config']['numrow'] = $nv_Request->get_int( 'config_numrow', 'post', 0 );
+		$return['config']['block_template'] = $nv_Request->get_string( 'config_block_template', 'post', 0 );
 		return $return;
 	}
 
@@ -94,7 +93,7 @@ if( ! nv_function_exists( 'nv_block_slider' ) )
 				$block_config['block_template'] = 'block_flex';
 			}
 			$block_tpl = $block_config['block_template'];
-			if( file_exists( NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $site_mods[$module]['module_file'] . '/'. $block_tpl ) )
+			if( file_exists( NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $site_mods[$module]['module_file'] . '/'. $block_tpl . '.tpl' ) )
 			{
 				$block_theme = $module_info['template'];
 			}

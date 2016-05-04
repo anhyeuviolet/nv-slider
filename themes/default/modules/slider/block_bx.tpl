@@ -1,5 +1,5 @@
 <!-- BEGIN: main -->
-<ul class="bxslider-{BLOCKID}">
+<ul class="bxslider-{BLOCKID} rel">
 <!-- BEGIN: loop -->
 	<li>
 		<a href="{ROW.link}"><img class="img-responsive" src="{ROW.thumb}" title="{ROW.title}"/></a>
