@@ -451,18 +451,10 @@ if( $nv_Request->get_int( 'save', 'post' ) == 1 )
 		nv_set_status_module();
 		if( empty( $error ) )
 		{
-			if( isset( $module_config['seotools']['prcservice'] ) and ! empty( $module_config['seotools']['prcservice'] ) and $rowcontent['status'] == 1 and $rowcontent['publtime'] < NV_CURRENTTIME + 1 and ( $rowcontent['exptime'] == 0 or $rowcontent['exptime'] > NV_CURRENTTIME + 1 ) )
-			{
-				Header( 'Location: ' . NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=rpc&id=' . $rowcontent['id'] . '&rand=' . nv_genpass() );
-				die();
-			}
-			else
-			{
-				$url = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name;
-				$msg1 = $lang_module['content_saveok'];
-				$msg2 = $lang_module['content_main'] . ' ' . $module_info['custom_title'];
-				redriect( $msg1, $msg2, $url, $module_data . '_bodyhtml' );
-			}
+			$url = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name;
+			$msg1 = $lang_module['content_saveok'];
+			$msg2 = $lang_module['content_main'] . ' ' . $module_info['custom_title'];
+			redriect( $msg1, $msg2, $url, $module_data . '_bodyhtml' );
 		}
 	}
 	else
