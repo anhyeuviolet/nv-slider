@@ -3,7 +3,7 @@
 <link href="{NV_BASE_SITEURL}themes/{TEMPLATE}/modules/slider/plugins/flex/flexslider.css" type="text/css" media="all" rel="stylesheet" />
 <script src="{NV_BASE_SITEURL}themes/{TEMPLATE}/modules/slider/plugins/flex/jquery.flexslider.js"></script>
 <!-- END: FLEX -->
-<div class="block-{BLOCKID}-slider">
+<div class="block-{BLOCKID}-slider rel">
 	<ul class="slides">  
 	<!-- BEGIN: loop -->
 		<li>

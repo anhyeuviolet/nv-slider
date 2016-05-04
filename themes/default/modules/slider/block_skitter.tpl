@@ -4,7 +4,7 @@
 <script type="text/javascript" language="javascript" src="{NV_BASE_SITEURL}themes/{TEMPLATE}/modules/slider/plugins/skitter/jquery.easing.1.3.js"></script>
 <script type="text/javascript" language="javascript" src="{NV_BASE_SITEURL}themes/{TEMPLATE}/modules/slider/plugins/skitter/jquery.skitter.min.js"></script>
 <!-- END: SKITTER -->
-<div class="box_skitter box_skitter_large-{BLOCKID}">
+<div class="box_skitter box_skitter_large-{BLOCKID} rel">
 	<ul class="{BLOCKID}">
 	<!-- BEGIN: loop -->
 		<li>
